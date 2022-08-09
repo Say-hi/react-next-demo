@@ -1,4 +1,9 @@
 import type { NextPage } from "next";
+import { ChangeEventHandler, useState } from "react";
+import CountDown from "components/CountDown";
+import styles from "./index.module.scss";
+import { message } from "antd";
+import request from "service/fetch";
 
 interface PropsType {
   isShow: boolean;
@@ -6,7 +11,121 @@ interface PropsType {
 }
 
 const Login: NextPage<PropsType> = ({ isShow = false, onClose }) => {
-    return isShow ? <div>123123</div> : null;
+  const [form, setForm] = useState({
+    phone: "",
+    verify: "",
+  });
+  const [isShowVerifyCode, setIsShowVerifyCode] = useState(false);
+
+  const handleClose = () => {
+    setIsShowVerifyCode(false);
+    onClose && onClose();
+  };
+
+  const handleLogin = () => {
+    if (!form.phone) {
+      message.warn("请填写您的手机号码");
+      return;
+    }
+    if (!form.verify) {
+      message.warn("请填写验证码");
+      return;
+    }
+    request
+      .post("/api/user/login", {
+        ...form,
+      })
+      .then((res: any) => {
+        if (res.code) {
+          return message.error(res.msg);
+        }
+        onClose();
+      });
+  };
+  const hanldeOAuthGithub = () => {};
+  const handleGetVerifyCode = () => {
+    if (!form.phone) {
+      message.warn("请填写您的手机号码");
+      return;
+    }
+    request
+      .post("/api/user/sendVerifyCode", {
+        to: form.phone,
+        templateId: 1,
+      })
+      .then((res: any) => {
+        if (res.code) {
+          message.error(res.msg);
+          return;
+        }
+        setIsShowVerifyCode(true);
+      });
+    // setIsShowVerifyCode(true)
+  };
+  const handleCountDownEnd = () => {
+    setIsShowVerifyCode(false);
+  };
+  const handleFormChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const { name, value } = e.target;
+    setForm({
+      ...form,
+      [name]: value,
+    });
+  };
+
+  return isShow ? (
+    <div className={styles.loginArea}>
+      <div className={styles.loginBox}>
+        <div className={styles.loginTitle}>
+          <div>手机号登录</div>
+          <div className={styles.close} onClick={handleClose}>
+            ×
+          </div>
+        </div>
+        <input
+          value={form.phone}
+          name="phone"
+          placeholder="请输入手机号"
+          type="text"
+          onChange={handleFormChange}
+          maxLength={11}
+        />
+        <div className={styles.verifyCodeArea}>
+          <input
+            value={form.verify}
+            name="verify"
+            placeholder="请输入验证码"
+            type="text"
+            maxLength={6}
+            onChange={handleFormChange}
+          />
+          <span className={styles.verifyCode} onClick={handleGetVerifyCode}>
+            {isShowVerifyCode ? (
+              <CountDown time={10} onEnd={handleCountDownEnd} />
+            ) : (
+              "获取验证码"
+            )}
+          </span>
+        </div>
+        <div className={styles.loginBtn} onClick={handleLogin}>
+          登录
+        </div>
+        <div className={styles.otherLogin} onClick={hanldeOAuthGithub}>
+          使用Git Hub登录
+        </div>
+        <div className={styles.loginPrivacy}>
+          注册登录即表示同意
+          <a
+            href="https://moco.imooc.com/privacy.html"
+            rel="noreferrer"
+            target="_blank"
+          >
+            协议
+          </a>
+        </div>
+      </div>
+    </div>
+  ) : null;
 };
 
 export default Login;

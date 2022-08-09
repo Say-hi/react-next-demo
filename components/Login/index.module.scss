@@ -1,0 +1,84 @@
+$mainColor: #0094ff;
+.loginArea {
+    position: fixed;
+    z-index: 1000;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, .3);
+    .loginBox {
+        width: 320px;
+        height: 320px;
+        background-color: #f1f1f1;
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        border-radius: 5 px;
+    }
+    input {
+        width: 100%;
+        line-height: 37px;
+        margin-bottom: 10px;
+        padding-left: 10px;
+        border-radius: 5px;
+        border: 1px solid #888;
+        outline: none;
+        transition: border .3s;
+        &:focus {
+            border: 1px solid $mainColor;
+        }
+    }
+    .verifyCodeArea {
+        position: relative;
+        cursor: pointer;
+        .verifyCode {
+            color: $mainColor;
+            position: absolute;
+            right: 20px;
+            top: 8px;
+            font-size: 14px;
+        }
+    }
+    .loginTitle {
+        font-size: 20px;
+        font-weight: bolder;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        .close {
+            color: #888;
+            cursor: pointer;
+        }
+    }
+    .loginBtn {
+        height: 40px;
+
+        line-height: 40px;
+        border-radius: 5px;
+        background-color: $mainColor;
+        color: #fff;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .otherLogin {
+        margin-top: 15px;
+        font-size: 14px;
+        color: $mainColor;
+        cursor: pointer;
+        display: inline-block;
+    }
+    .loginPrivacy {
+        margin-top: 10px;
+        color: #333;
+        font-size: 14px;
+        a {
+            color: $mainColor;
+        }
+    }
+
+}
