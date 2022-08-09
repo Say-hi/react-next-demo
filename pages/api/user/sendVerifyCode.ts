@@ -48,9 +48,8 @@ async function sendVerifyCode(req: NextApiRequest, res: NextApiResponse) {
         }
     }) as IData
     const { statusCode, templateSMS, statusMsg } = data
-    console.log(data)
     if (statusCode === '000000') {
-        session['verifyCode'] = verifyCode
+        session.verifyCode = verifyCode
         await session.save()
         return res.status(200).json({
             code: 0,

@@ -4,6 +4,7 @@ import CountDown from "components/CountDown";
 import styles from "./index.module.scss";
 import { message } from "antd";
 import request from "service/fetch";
+import { IDENTITY_TYPE } from "interface";
 
 interface PropsType {
   isShow: boolean;
@@ -34,6 +35,7 @@ const Login: NextPage<PropsType> = ({ isShow = false, onClose }) => {
     request
       .post("/api/user/login", {
         ...form,
+        identity_type: IDENTITY_TYPE.phone
       })
       .then((res: any) => {
         if (res.code) {

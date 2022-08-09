@@ -30,24 +30,25 @@
 
 
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
-import { Users } from './users'
+import { User } from './user'
 
-@Entity()
-export class UserAuths {
+@Entity({
+    name: 'user_auths'
+})
+export class UserAuth {
     @PrimaryGeneratedColumn()
     readonly id!: number
 
-    @ManyToOne(() => Users, {
+    @ManyToOne(() => User, {
         cascade: true
     })
     @JoinColumn({
-        name: 'user_id '
+        name: 'user_id'
     })
-    user!: Users
-
+    user!: User
 
     @Column()
-    identity_type!: string
+    identity_type!: number
 
     @Column()
     identifier!: string

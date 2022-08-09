@@ -24,8 +24,10 @@
 
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
-@Entity()
-export class Users {
+@Entity({
+    name: 'users'
+})
+export class User {
     @PrimaryGeneratedColumn()
     readonly id!: number 
 

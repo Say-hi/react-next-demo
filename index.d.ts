@@ -1,5 +1,7 @@
-import { IronSession } from 'iron-session'
+import 'iron-session'
 
-declare type IronSession = IronSession & {
-    verifyCode: string
+declare module 'iron-session' {
+    interface IronSessionData {
+        verifyCode?: number
+    }    
 }
