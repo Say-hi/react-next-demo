@@ -1,7 +1,10 @@
-import 'iron-session'
+import "iron-session";
 
-declare module 'iron-session' {
-    interface IronSessionData {
-        verifyCode?: number
-    }    
+declare module "iron-session" {
+  interface IronSessionData {
+    verifyCode?: number;
+    id?: number;
+    nickname?: string;
+    avatar?: string;
+  }
 }

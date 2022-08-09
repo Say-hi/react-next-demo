@@ -11,16 +11,19 @@ interface PropsType {
   onClose(): void;
 }
 
+const initForm = {
+  phone: "",
+  verify: "",
+}
+
 const Login: NextPage<PropsType> = ({ isShow = false, onClose }) => {
-  const [form, setForm] = useState({
-    phone: "",
-    verify: "",
-  });
+  const [form, setForm] = useState(initForm);
   const [isShowVerifyCode, setIsShowVerifyCode] = useState(false);
 
   const handleClose = () => {
     setIsShowVerifyCode(false);
     onClose && onClose();
+    setForm(initForm)
   };
 
   const handleLogin = () => {
