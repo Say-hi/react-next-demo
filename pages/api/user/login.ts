@@ -4,6 +4,8 @@ import { UserAuth, User } from "db/entity";
 import { IDENTITY_TYPE } from "interface";
 import { withIronSessionApiRoute } from "iron-session/next";
 import { NextApiHandler } from "next";
+import { Cookie } from "next-cookie";
+import { setCookie } from "utils";
 
 const login: NextApiHandler = async (req, res) => {
   const { phone, verify, identity_type = IDENTITY_TYPE.phone } = req.body;
@@ -62,7 +64,9 @@ const login: NextApiHandler = async (req, res) => {
       nickname = user.nickname;
       avatar = user.avatar;
     }
-    session.id = id;
+    const cookies = Cookie.fromApiRoute(req, res)
+    setCookie(cookies, {id, nickname, avatar})
+    session.userId = id;
     session.nickname = nickname;
     session.avatar = avatar;
     await session.save();

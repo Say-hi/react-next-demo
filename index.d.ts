@@ -6,5 +6,6 @@ declare module "iron-session" {
     id?: number;
     nickname?: string;
     avatar?: string;
+    userId?: number
   }
 }

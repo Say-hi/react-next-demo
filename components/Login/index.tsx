@@ -5,6 +5,9 @@ import styles from "./index.module.scss";
 import { message } from "antd";
 import request from "service/fetch";
 import { IDENTITY_TYPE } from "interface";
+import { useStore } from "store";
+import { observer } from "mobx-react-lite";
+import { github_id } from "config";
 
 interface PropsType {
   isShow: boolean;
@@ -14,16 +17,16 @@ interface PropsType {
 const initForm = {
   phone: "",
   verify: "",
-}
+};
 
 const Login: NextPage<PropsType> = ({ isShow = false, onClose }) => {
   const [form, setForm] = useState(initForm);
   const [isShowVerifyCode, setIsShowVerifyCode] = useState(false);
-
+  const store = useStore();
   const handleClose = () => {
     setIsShowVerifyCode(false);
     onClose && onClose();
-    setForm(initForm)
+    setForm(initForm);
   };
 
   const handleLogin = () => {
@@ -38,16 +41,21 @@ const Login: NextPage<PropsType> = ({ isShow = false, onClose }) => {
     request
       .post("/api/user/login", {
         ...form,
-        identity_type: IDENTITY_TYPE.phone
+        identity_type: IDENTITY_TYPE.phone,
       })
       .then((res: any) => {
         if (res.code) {
           return message.error(res.msg);
         }
         onClose();
+        store.user?.setUserInfo(res.data);
+        // console.log(store);
       });
   };
-  const hanldeOAuthGithub = () => {};
+  const hanldeOAuthGithub = () => {
+    window.open(`https://github.com/login/oauth/authorize?client_id=${github_id}&redirect_url=http://localhost:3000/api/oauth/redirect`, '_blank')
+    // '_blank', 'height=600, width=600, toolbar=no, scrollbars=no, resizable=no, location=no, status=no'
+  };
   const handleGetVerifyCode = () => {
     if (!form.phone) {
       message.warn("请填写您的手机号码");
@@ -133,4 +141,4 @@ const Login: NextPage<PropsType> = ({ isShow = false, onClose }) => {
   ) : null;
 };
 
-export default Login;
+export default observer(Login);
