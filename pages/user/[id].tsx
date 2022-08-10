@@ -5,3 +5,4 @@ const userPage = () => {
 }
 
 export default userPage
+export { getServerSideProps } from 'help/getServerSideProps'

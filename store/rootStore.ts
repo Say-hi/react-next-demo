@@ -1,10 +1,10 @@
 import userStore, { IUserStore } from "./userStore."
 
-export interface IInitiavlVal {
+export interface IInitivalVal {
     user?: IUserStore
 }
 
-export default function createStore (initiavlVal: IInitiavlVal): () => IInitiavlVal {
+export default function createStore (initiavlVal: IInitivalVal): () => IInitivalVal {
     return () => {
         return {
             user: {...userStore(), ...initiavlVal?.user}

@@ -5,9 +5,9 @@ import styles from './index.module.scss'
 import { ChangeEventHandler, useState } from "react";
 import { Button, Input, message } from "antd";
 import request from "service/fetch";
-import userStore from "store/userStore.";
 import { useRouter } from "next/router";
 import { observer } from "mobx-react-lite";
+import { useStore } from "store";
 
 const MDEditor = dynamic(
     () => import("@uiw/react-md-editor"),
@@ -18,8 +18,7 @@ const EditorNew: { (): JSX.Element; layout: any; } = () => {
     const {push} = useRouter()
     const [content, setContent] = useState('')
     const [title, setTitle] = useState('')
-    const store = userStore()
-    console.log(store, 'store')
+    const store = useStore()
     const handleSetContent = (context?: string) => {
         setContent(context + '')
     }
@@ -36,7 +35,7 @@ const EditorNew: { (): JSX.Element; layout: any; } = () => {
          }).then((res: any) => {
             if (!res.code) {
                 message.success('文章发布成功')
-                push(`/user/${store.userInfo.userId}`)
+                push(`/user/${store?.user?.userInfo?.userId}`)
             } else {
                 message.error(res.msg)
             }
@@ -60,3 +59,4 @@ const EditorNew: { (): JSX.Element; layout: any; } = () => {
 EditorNew.layout = null
 
 export default observer(EditorNew)
+export { getServerSideProps } from 'help/getServerSideProps'

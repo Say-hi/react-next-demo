@@ -3,15 +3,14 @@ import type { AppProps } from "next/app";
 import Layout from "../components/Layout";
 import { StoreProvider } from "store";
 
+console.log('complie html')
+
 function MyApp({
-  initialValue,
   Component,
   pageProps,
-}: AppProps & {
-  initialValue: any;
-}) {
+}: AppProps) {
   return (
-    <StoreProvider initialValue={initialValue}>
+    <StoreProvider initialValue={pageProps.initialValue}>
       {Component['layout'] === null ? (
         <Component {...pageProps} />
       ) : (
@@ -22,21 +21,5 @@ function MyApp({
     </StoreProvider>
   );
 }
-
-MyApp.getInitialProps = async ({ ctx }: { ctx: any }) => {
-  const { userId, avatar, nickname } = ctx.req?.cookies || {};
-  console.log(userId, avatar, nickname , 'initial')
-  return {
-    initialValue: {
-      user: {
-        userInfo: {
-          userId,
-          avatar,
-          nickname,
-        },
-      },
-    },
-  };
-};
 
 export default MyApp;
