@@ -10,7 +10,7 @@ export const StoreProvider = ({
   initialValue,
   children,
 }: PropsWithChildren & { initialValue: IInitivalVal }) => {
-  console.log(initialValue, "initialValue---StoreProvider");
+//   console.log(initialValue, "initialValue---StoreProvider");
   const store = useLocalObservable(createStore(initialValue));
   return (
     <StoreContext.Provider value={store}>{children}</StoreContext.Provider>

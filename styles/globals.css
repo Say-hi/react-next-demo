@@ -1,5 +1,14 @@
-@import 'antd/dist/antd.css';
+@import "antd/dist/antd.css";
 
 body {
-    background-color: aliceblue;
+  background-color: aliceblue;
+}
+
+.content-layout {
+  width: 1080px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 20px;
+  margin-top: 10px;
+  border-radius: 5px;
 }

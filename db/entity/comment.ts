@@ -1,15 +1,13 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Article } from "./article";
 import { User } from "./user";
 
 @Entity({
-    name: 'articles'
+    name: 'comments'
 })
-export class Artilce {
+export class Comment {
     @PrimaryGeneratedColumn()
     readonly id!: number
-
-    @Column()
-    title!: string
 
     @Column({
         type: 'text'
@@ -17,20 +15,20 @@ export class Artilce {
     content!: string
 
     @Column()
-    views!:number
-
-    @Column()
     create_time!: Date
 
     @Column()
     update_time!: Date
-
-    @Column()
-    is_delete!: number
 
     @ManyToOne(() => User)
     @JoinColumn({
         name: 'user_id'
     })
     user!: User
+
+    @ManyToOne(() => Article)
+    @JoinColumn({
+        name: 'article_id'
+    })
+    article!: Article
 }

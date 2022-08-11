@@ -2,11 +2,11 @@ import 'reflect-metadata'
 
 import { DataSource, DataSourceOptions } from 'typeorm'
 import type { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
-import { Artilce, User, UserAuth } from './entity'
+import { Article, User, UserAuth, Comment, Tag } from './entity'
 
 
 const conncetionConfig: DataSourceOptions = {
-    entities: [User, UserAuth, Artilce],
+    entities: [User, UserAuth, Article, Comment, Tag],
     synchronize: false,
     logging: true,
     type: process.env.DATABASE_TYPE as MysqlConnectionOptions['type'],

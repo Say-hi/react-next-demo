@@ -48,7 +48,7 @@ const Login: NextPage<PropsType> = ({ isShow = false, onClose }) => {
           return message.error(res.msg);
         }
         onClose();
-        store.user?.setUserInfo(res.data);
+        store?.user?.setUserInfo(res.data);
         // console.log(store);
       });
   };

@@ -1,6 +1,6 @@
 import { ironOptions } from "config";
 import { getDB } from "db";
-import { Artilce, User } from "db/entity";
+import { Article, User } from "db/entity";
 import { withIronSessionApiRoute } from "iron-session/next";
 import { NextApiHandler } from "next";
 
@@ -18,9 +18,9 @@ const publish: NextApiHandler = async (req, res) => {
     console.log(publishUser, 'publishUser')
 
     if (publishUser) {
-        const artilceRep = db.getRepository(Artilce)
+        const ArticleRep = db.getRepository(Article)
 
-        const newArticle = new Artilce()
+        const newArticle = new Article()
         newArticle.title = title
         newArticle.content = content
         newArticle.create_time = new Date()
@@ -29,7 +29,7 @@ const publish: NextApiHandler = async (req, res) => {
         newArticle.views = 0
         newArticle.user = publishUser
         let msg
-        const articleAdd = await artilceRep.save(newArticle).catch(e => msg = e)
+        const articleAdd = await ArticleRep.save(newArticle).catch(e => msg = e)
 
         res.status(200).send({
             code: articleAdd ? 0 : -1,

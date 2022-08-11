@@ -1,0 +1,57 @@
+.container {
+    margin: 0 auto;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    cursor: pointer;
+    .artilce {
+        width: 90%;
+    }
+    .userInfo {
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        span {
+            padding: 0 10px;
+            border-right: 1px solid #838181;
+            &:first-of-type {
+                padding-left: 0;
+            }
+            &:last-of-type {
+                border-right: none;
+            }
+        }
+        .name {
+            color: #0094ff;
+            &:hover {
+                text-decoration: underline;
+                color: #0348af;
+            }
+        }
+        .date {
+            color: #80969c;
+        }
+    }
+    .title {
+        font-size: 20px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .content {
+        font-size: 16px;
+        color: #80969c;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .statistics {
+        display: flex;
+        align-items: center;
+        span {
+            margin-left: 10px;
+        }
+    }
+}

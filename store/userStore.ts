@@ -1,10 +1,10 @@
 import { User } from "db/entity";
 
 export interface IUserStore {
-    userInfo?: Partial<Omit<User, 'id'>> & {
+    userInfo: Partial<Omit<User, 'id'>> & {
         userId?: number
     },
-    setUserInfo?: (value: IUserStore['userInfo']) => void
+    setUserInfo: (value: IUserStore['userInfo']) => void
 }
 
 const userStore = (): IUserStore => {

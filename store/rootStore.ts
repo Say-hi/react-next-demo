@@ -1,4 +1,4 @@
-import userStore, { IUserStore } from "./userStore."
+import userStore, { IUserStore } from "./userStore"
 
 export interface IInitivalVal {
     user?: IUserStore

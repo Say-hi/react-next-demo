@@ -15,7 +15,7 @@ import { observer } from "mobx-react-lite";
 const Navbar: NextPage = () => {
   const { pathname, push } = useRouter();
   const store = useStore();
-  const {userId, avatar} = store.user!.userInfo
+  const {userId, avatar} = store!.user!.userInfo
   const [isShowLogin, setIsShowLogin] = useState(false);
   const menuItems = [
     {
@@ -47,8 +47,8 @@ const Navbar: NextPage = () => {
     if (key === 'logout') {
         const res = await request.post('/api/user/logout') as any
         if(!res?.code) {
-          console.log('推出')
-          store.user?.setUserInfo({})
+          console.log('登出系统')
+          store!.user!.setUserInfo({})
         }
     } else if (key === 'self') {
       push(`/user/${userId}`)
