@@ -18,7 +18,7 @@ const publish: NextApiHandler = async (req, res) => {
     const userRep = db.getRepository(User)
     const targetArticle = await articleRep.findOne({
         where: {
-            id: articleId
+            id: Number(articleId)
         }
     })
     const commentUser = await userRep.findOne({

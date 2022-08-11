@@ -17,9 +17,9 @@ const TagPage: NextPage = () => {
   useEffect(() => {
     request.get("/api/tag/get").then((res: any) => {
       if (!res.code) {
-        const { userFollowTags, allTags: sysAllTags } = res.data;
-        setFollowTags(userFollowTags);
-        setAllTags(sysAllTags);
+        const { followTags, allTags } = res.data;
+        setFollowTags(followTags);
+        setAllTags(allTags);
       }
     });
   }, []);
@@ -29,13 +29,13 @@ const TagPage: NextPage = () => {
       <Tabs>
         <Tabs.TabPane tab='已关注标签' key='follow' className={styles.tags}>
             {
-                followTags?.map(tag => (
+                followTags?.length ? followTags.map(tag => (
                     <div key={tag.id} className={styles.tagWrapper}>
                         <div>{ ANT_ICON[tag.icon].render() }</div>
                         <div className={styles.title}>{ tag.title }</div>
                         <div>{ tag.follow_count } 关注 { tag.article_count } 文章</div>
                     </div>
-                ))
+                )) : <div>你还没有关注的标签哦~~</div>
             }
         </Tabs.TabPane>
         <Tabs.TabPane tab='全部标签' key='all' className={styles.tags}>
