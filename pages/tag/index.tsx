@@ -55,7 +55,7 @@ const TagPage: NextPage = () => {
                         <div className={styles.title}>{ tag.title }</div>
                         <div>{ tag.follow_count } 关注 { tag.article_count } 文章</div>
                         {
-                          tag?.users?.find(user => Number(user.id) === Number(userId)) ? 
+                          tag?.users?.find(user => Number(user?.id) === Number(userId)) ? 
                           <Button type='primary' onClick={handleToggleFollow(tag.id, false)}>已关注</Button>
                           :
                           <Button type='default' onClick={handleToggleFollow(tag.id, true)}>关注</Button>
@@ -72,7 +72,7 @@ const TagPage: NextPage = () => {
                         <div className={styles.title}>{ tag.title }</div>
                         <div>{ tag.follow_count } 关注 { tag.article_count } 文章</div>
                         {
-                          tag?.users?.find(user => Number(user.id) === Number(userId)) ? 
+                          tag?.users?.find(user => Number(user?.id) === Number(userId)) ? 
                           <Button type='primary' onClick={handleToggleFollow(tag.id, false)}>已关注</Button>
                           :
                           <Button type='default' onClick={handleToggleFollow(tag.id, true)}>关注</Button>
