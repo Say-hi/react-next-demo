@@ -29,7 +29,7 @@ export class Tag {
             name: 'user_id'
         }
     })
-    users!: User
+    users!: User | null
 
     @ManyToMany(() => Article, article => article.tags)
     @JoinTable({
@@ -41,7 +41,7 @@ export class Tag {
             name: 'article_id'
         }
     })
-    articles!: ArtilceType
+    articles!: ArtilceType | null
 
     @Column()
     follow_count!: number

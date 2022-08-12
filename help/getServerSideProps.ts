@@ -27,15 +27,19 @@ export const indexGetServerSideProps: GetServerSideProps = async ({ req }) => {
   const articleRep = db.getRepository(Article)
   const tagRep = db.getRepository(Tag)
   const tags = await tagRep.find() || []
+  tags.unshift({
+    id: 0,
+    title: '全部',
+    icon: '',
+    follow_count: 0,
+    article_count: 0,
+    articles: null,
+    users: null
+  })
   const articles = await articleRep.find({
     relations: ['user'],
     order: {
       update_time: 'DESC'
-    },
-    where: {
-      tags: {
-        id: tags[0].id
-      }
     }
   }) || []
 
@@ -133,6 +137,35 @@ export const getUserServerSideProps: GetServerSideProps = async ({ req, params }
         },
       },
       userInfo
+    }
+  };
+};
+
+export const getUserProfileServerSideProps: GetServerSideProps = async ({ req }) => {
+  const { userId = null, avatar = null, nickname = null } = req.cookies || {};
+  let userInfo
+  if (userId) {
+    const db = await getDB()
+    const user = await db.getRepository(User).findOne({
+      where: {
+        id: Number(userId)
+      }
+    })
+    userInfo = user
+  }
+
+  return {
+    props: {
+      initialValue: {
+        user: {
+          userInfo: {
+            userId,
+            avatar,
+            nickname,
+          },
+        },
+      },
+      userInfo: JSON.parse(JSON.stringify(userInfo))
     }
   };
 };

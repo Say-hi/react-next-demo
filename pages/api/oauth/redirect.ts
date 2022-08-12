@@ -14,14 +14,19 @@ const redirect: NextApiHandler = async (req, res) => {
     console.log(code, 'github_code')
     const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID
     const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET
-
+    let msg
     const url = `https://github.com/login/oauth/access_token?client_id=${GITHUB_CLIENT_ID}&client_secret=${GITHUB_CLIENT_SECRET}&code=${code}`
     console.log('----------开始请求github authorize')
     const githubAuthorizeData = await request.post(url, {}, {
         headers: {
             accept: 'application/json'
         }
-    }) as any
+    }).catch(e => (msg = e)) as any
+    if (msg) {
+        res.writeHead(302, {
+            location: `/?msg=${msg}`
+        }).end()
+    }
     console.log('----------结束请求github authorize')
     const { access_token } = githubAuthorizeData
     console.log('----------开始请求github user')
