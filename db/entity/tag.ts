@@ -1,6 +1,9 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Article } from "./article";
 import { User } from "./user";
+
+interface ArtilceType extends Article {}
+
 @Entity({
     name: 'tags'
 })
@@ -28,9 +31,7 @@ export class Tag {
     })
     users!: User
 
-    @ManyToMany(() => Article, {
-        cascade: true
-    })
+    @ManyToMany(() => Article, article => article.tags)
     @JoinTable({
         name: 'tags_articles_rel',
         joinColumn: {
@@ -40,7 +41,7 @@ export class Tag {
             name: 'article_id'
         }
     })
-    articles!: Article
+    articles!: ArtilceType
 
     @Column()
     follow_count!: number

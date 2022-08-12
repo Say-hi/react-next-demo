@@ -1,12 +1,12 @@
 import { ironOptions } from "config";
 import { getDB } from "db";
-import { Article } from "db/entity";
+import { Article, Tag } from "db/entity";
 import { withIronSessionApiRoute } from "iron-session/next";
 import { NextApiHandler } from "next";
 
 const update: NextApiHandler = async (req, res) => {
     // const session = req.session
-    const { title = '', content = '', articleId = 0} = req.body
+    const { title = '', content = '', articleId = 0, tagsId = []} = req.body
     const { userId } = req.cookies
     if (!title.length || !content.length || !articleId) {
         res.status(200).send({
@@ -23,7 +23,7 @@ const update: NextApiHandler = async (req, res) => {
         where: {
             id: Number(articleId)
         },
-        relations: ['user']
+        relations: ['user', 'tags']
     })
     if (articleInfo?.user.id != userId) {
         res.status(200).send({
@@ -34,10 +34,34 @@ const update: NextApiHandler = async (req, res) => {
         return 
     }
     if (articleInfo) {
+
+        let tags: Array<Tag> = []
+
+        const beforeTagsId = articleInfo.tags?.map(tag => tag.id)
+
+        await db.createQueryBuilder().update(Tag).set({
+            article_count: () => "`article_count` - 1"
+        }).where(`id IN (${beforeTagsId.toString()})`).execute()
+
+        const tagRef = db.getRepository(Tag)
+
+        if (tagsId.length) {
+            tags = await tagRef.find({
+                where: tagsId.map((tagId: number) => ({
+                    id: Number(tagId)
+                }))
+            })
+            tags = tags.map(tag => {
+                tag.article_count++
+                return tag
+            })
+        }
+
         articleInfo.title = title
         articleInfo.content = content
         articleInfo.update_time = new Date()
-        console.log(articleInfo, 'articleInfo ssr')
+        articleInfo.tags = tags
+        // console.log(articleInfo, 'articleInfo ssr')
         let msg
         const articleAdd = await articleRep.save(articleInfo).catch(e => msg = e)
 

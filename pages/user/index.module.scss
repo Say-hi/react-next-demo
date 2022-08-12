@@ -1,0 +1,77 @@
+.userDetail {
+    display: flex;
+    justify-content: space-between;
+    width: 1080px;
+    margin: 0 auto;
+    margin-top: 10px;
+    .left {
+        padding: 20px;
+        width: 820px;
+        border-radius: 5px;
+        background: white;
+        .userInfo {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            position: relative;
+            .avatar {
+                margin-right: 50px;
+            }
+            .nickname {
+                font-size: 20px;
+                font-weight: bolder;
+                margin-bottom: 8px;
+            }
+            .desc {
+                color: #333;
+                margin-bottom: 5px;
+                font-size: 12px;
+                display: flex;
+                align-items: center;
+                svg {
+                    margin-right: 10px;
+                    width: 12px;
+                    height: 12px;
+                }
+            }
+            button {
+                position: absolute;
+                right: 0;
+            }
+        }
+    }
+    .right {
+        width: 240px;
+        height: 180px;
+        background-color: white;
+        .achievement {
+            height: 180px;
+            .header {
+                height: 50px;
+                border-bottom: 1px solid #f3f3f3;
+                padding: 20px;
+                font-size: 16px;
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+            }
+            .number {
+                padding: 20px;
+                .wrapper {
+                    display: flex;
+                    align-items: baseline;
+                    margin-bottom: 10px;
+                    svg {
+                        fill: #0094ff;
+                        margin-right: 10px;
+                    }
+                    .wNumber {
+                        font-size: 20px;
+                        font-weight: bold;
+                        padding: 0 5px;
+                    }
+                }
+            }
+        }
+    }
+}

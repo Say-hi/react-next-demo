@@ -6,7 +6,7 @@ import { Article, User, UserAuth, Comment, Tag } from './entity'
 
 
 const conncetionConfig: DataSourceOptions = {
-    entities: [User, UserAuth, Article, Comment, Tag],
+    entities: [User, UserAuth, Comment, Article, Tag ],
     synchronize: false,
     logging: true,
     type: process.env.DATABASE_TYPE as MysqlConnectionOptions['type'],

@@ -1,6 +1,7 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./user";
 import { Comment } from './comment'
+import { Tag } from "./tag";
 
 @Entity({
     name: 'articles'
@@ -37,4 +38,9 @@ export class Article {
 
     @OneToMany(() => Comment, (comment) => comment.article)
     comments!: Comment[]
+
+    @ManyToMany(() => Tag, (tag) => tag.articles, {
+        cascade: true
+    })
+    tags!: Tag[]
 }

@@ -1,11 +1,11 @@
 
 import { getDB } from "db";
-import { Article } from "db/entity";
+import { Article, Tag, User } from "db/entity";
 import { GetServerSideProps } from "next/types";
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const { userId, avatar, nickname } = req.cookies || {};
-  // console.log(userId, avatar, nickname , 'initial')
+  const { userId = null, avatar = null, nickname = null } = req.cookies || {};
+  // console.log(userId, avatar, nickname , 'page initial')
   return {
     props: {
       initialValue: {
@@ -22,12 +22,23 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 };
 
 export const indexGetServerSideProps: GetServerSideProps = async ({ req }) => {
-  const { userId, avatar, nickname } = req.cookies || {};
+  const { userId = null, avatar = null, nickname = null } = req.cookies || {};
   const db = await getDB()
   const articleRep = db.getRepository(Article)
+  const tagRep = db.getRepository(Tag)
+  const tags = await tagRep.find() || []
   const articles = await articleRep.find({
-    relations: ['user']
+    relations: ['user'],
+    order: {
+      update_time: 'DESC'
+    },
+    where: {
+      tags: {
+        id: tags[0].id
+      }
+    }
   }) || []
+
   // console.log(userId, avatar, nickname , 'initial')
   return {
     props: {
@@ -40,13 +51,14 @@ export const indexGetServerSideProps: GetServerSideProps = async ({ req }) => {
           },
         },
       },
-      articles: JSON.parse(JSON.stringify(articles))
+      articles: JSON.parse(JSON.stringify(articles)),
+      tags: JSON.parse(JSON.stringify(tags))
     }
   };
 };
 
 export const articleDetailGetServerSideProps: GetServerSideProps = async ({ req, params, resolvedUrl }) => {
-  const { userId, avatar, nickname } = req.cookies || {};
+  const { userId = null, avatar = null, nickname = null } = req.cookies || {};
   const { id: articelId } = params as any
   const db = await getDB()
   const articleRep = db.getRepository(Article)
@@ -54,7 +66,7 @@ export const articleDetailGetServerSideProps: GetServerSideProps = async ({ req,
     where: {
       id: Number(articelId)
     },
-    relations: ['user', 'comments', 'comments.user']
+    relations: ['user', 'comments', 'comments.user', 'tags']
   })
 
   if (article && resolvedUrl.indexOf('article') >= 0) {
@@ -75,6 +87,52 @@ export const articleDetailGetServerSideProps: GetServerSideProps = async ({ req,
         },
       },
       article: JSON.parse(JSON.stringify(article))
+    }
+  };
+};
+
+
+export const getUserServerSideProps: GetServerSideProps = async ({ req, params }) => {
+  const { userId = null, avatar = null, nickname = null } = req.cookies || {};
+  let userInfo = {}
+  let requestUserId = params?.id
+  if (requestUserId) {
+    const db = await getDB()
+    const user = await db.getRepository(User).findOne({
+      where: {
+        id: Number(requestUserId)
+      }
+    })
+    if (user) {
+      const articles = await db.getRepository(Article).find({
+        where: {
+          user: {
+            id: Number(requestUserId)
+          }
+        },
+        relations: ['user', 'tags'],
+        select: ['content', 'create_time', 'id', 'tags', 'title', 'update_time', 'user', 'views']
+      })
+      userInfo = JSON.parse(JSON
+        .stringify({
+          ...user,
+          articles
+        }))
+    }
+  }
+
+  return {
+    props: {
+      initialValue: {
+        user: {
+          userInfo: {
+            userId,
+            avatar,
+            nickname,
+          },
+        },
+      },
+      userInfo
     }
   };
 };

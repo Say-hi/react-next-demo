@@ -17,7 +17,7 @@ const tagGet: NextApiHandler = async (req, res) => {
             }
         }
     })
-    console.log(followTags, 'followTags')
+    // console.log(followTags, 'followTags')
 
     const allTags = await tagRep.find({
         relations: ['users']
