@@ -37,7 +37,7 @@ export const indexGetServerSideProps: GetServerSideProps = async ({ req }) => {
     users: null
   })
   const articles = await articleRep.find({
-    relations: ['user'],
+    relations: ['user', 'tags'],
     order: {
       update_time: 'DESC'
     }

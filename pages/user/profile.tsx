@@ -1,9 +1,6 @@
 import { Button, Form, FormItemProps, FormProps, Input, message } from "antd";
-import { User } from "db/entity";
 import { observer } from "mobx-react-lite";
-import { useRouter } from "next/router";
-import { type } from "os";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import request from "service/fetch";
 import styles from "./index.module.scss";
 
@@ -24,9 +21,7 @@ const tailLayout: FormItemProps = {
 
 const UserProfile = () => {
   const [ form ] = Form.useForm();
-  useEffect(() => {
-    getUserDetail()
-  }, [])
+  
   const getUserDetail = () => {
     request.get('/api/user/detail').then((res: any) => {
         if (!res.code) {
@@ -36,7 +31,12 @@ const UserProfile = () => {
         }
     })
   }
-  const handleSubmit = () => {
+
+  useEffect(() => {
+    getUserDetail()
+  }, [])
+
+  const handleSubmit = useCallback(() => {
     request.post('/api/user/update', {
         ...form.getFieldsValue()
     }).then((res: any) => {
@@ -46,7 +46,7 @@ const UserProfile = () => {
             message.error(res.msg)
         }
     })
-  };
+  }, [])
   return (
     <div className="content-layout">
       <div className={styles.userProfile}>

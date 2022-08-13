@@ -28,6 +28,14 @@ const ListItem = ({ article }: IProps) => {
                     <div className={styles.statistics}>
                         <EyeOutlined />
                         <span>{ article.views }</span>
+                        
+                    </div>
+                    <div className={styles.tagWrapper}>
+                    {
+                            article?.tags?.map(tag => (
+                                <div key={tag?.id}> {tag.title}</div>
+                            ))
+                        }
                     </div>
                 </div>
                 <Avatar size={48} src={article.user.avatar} />
